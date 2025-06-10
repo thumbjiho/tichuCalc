@@ -1,6 +1,7 @@
 import styled from "styled-components";
+// Assuming ChevronIcon or similar icon is passed as a child or imported here if needed
+// import { ReactComponent as ChevronIcon } from "./assets/icons/chevron-up-down.svg";
 
-// StatusChip (예: NO TICHU, ST SUCCESS 등을 표시)
 const StatusChipWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -16,16 +17,19 @@ const StatusChipWrapper = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid white; */
+  /* border: 1px solid white; (주석 처리됨) */
+  transition: background-color 0.2s ease; /* 호버 시 배경색 전환 부드럽게 */
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.2); /* 배경색 예시 */
+    background-color: rgba(0, 0, 0, 0.2); /* 호버 시 배경색 변경 */
   }
 `;
 
-const handleStatusChipClick = () => {};
-
+// StatusChip 컴포넌트 (내용을 children으로 받을 수 있도록 수정)
 function StatusChip({ children }) {
+  // The 'handleStatusChipClick' variable was defined but not used, causing a build error.
+  // It has been removed. If you intend to add click functionality to the StatusChip,
+  // please re-implement the handler and ensure it's used (e.g., onClick={handleStatusChipClick}).
   return <StatusChipWrapper>{children}</StatusChipWrapper>;
 }
 
