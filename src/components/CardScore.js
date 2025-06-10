@@ -44,7 +44,7 @@ const ScoreBox = styled.div`
   justify-content: center;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  /* transition: all 0.2s ease; */
 `;
 
 const ButtonGroup = styled.div`
