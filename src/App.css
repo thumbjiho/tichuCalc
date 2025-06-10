@@ -2,6 +2,13 @@ body,
 html,
 #root {
   font-family: "proxima-soft", sans-serif;
+  height: 100%; /* Make html, body, and the root div (where React mounts) fill the entire height */
+  margin: 0; /* Remove default margins that browsers apply */
+  padding: 0; /* Remove default paddings */
+}
+
+body {
+  background-color: #1e1e1e; /* Apply your desired background color directly to the body */
 }
 
 * {
