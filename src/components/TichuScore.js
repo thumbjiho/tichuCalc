@@ -22,7 +22,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  max-width: 360px;
   flex-direction: column;
   gap: 12px;
   justify-content: center;

@@ -12,7 +12,7 @@ const colorMap = {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  max-width: 360px;
+  /* max-width: 512px; */
   flex-direction: column;
   gap: 8px;
   justify-content: center;

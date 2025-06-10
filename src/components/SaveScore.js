@@ -4,7 +4,7 @@ import Button from "./Button";
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  max-width: 360px;
+  /* max-width: 360px; */
   flex-direction: column;
   gap: 16px;
   height: fit-content;
