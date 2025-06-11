@@ -48,16 +48,6 @@ const TeamColumn = styled.div`
   align-items: center;
 `;
 
-// ScoreDisplayRow styled component 재추가
-const ScoreDisplayRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  margin-top: 16px; /* Spacing between player cards and score boxes */
-`;
 // --- TichuScore의 기존 styled-components 끝 ---
 
 function TichuScore({ setTichuScores }) {
@@ -170,7 +160,7 @@ function TichuScore({ setTichuScores }) {
         return { ...p, tichuStatus: TICHU_STATUS.NONE }; // NONE 또는 NO_TICHU로 설정
       });
     });
-  }, [players.map((p) => p.order).join(",")]); // players 배열의 order 변화에 반응
+  }, [players]); // players 배열의 order 변화에 반응
 
   // PlayerCard 클릭 핸들러: 카드의 선택 상태를 토글하고 순서를 재조정합니다.
   const handlePlayerCardClick = (clickedPlayerId) => {
@@ -270,7 +260,7 @@ function TichuScore({ setTichuScores }) {
 
   useEffect(() => {
     setTichuScores([blueTeamScore, yellowTeamScore]);
-  }, [blueTeamScore, yellowTeamScore]);
+  }, [blueTeamScore, yellowTeamScore, setTichuScores]);
   // --- Tichu Score 계산 로직 끝 ---
 
   return (
