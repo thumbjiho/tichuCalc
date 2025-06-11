@@ -64,26 +64,25 @@ const ButtonRow = styled.div`
   gap: 8px;
 `;
 
-function CardScore() {
+function CardScore({ cardScores, setCardScores }) {
   const [selected, setSelected] = useState(0);
-  const [scores, setScores] = useState([0, 0]);
 
   const handleScoreChange = (value) => {
     if (value === "ac") {
-      setScores([0, 0]);
+      setCardScores([0, 0]);
       return;
     }
 
     const newScore = Math.max(
       -25,
-      Math.min(125, scores[selected] + value)
+      Math.min(125, cardScores[selected] + value)
     );
     const otherScore = Math.max(-25, Math.min(125, 100 - newScore));
     const updated =
       selected === 0
         ? [newScore, otherScore]
         : [otherScore, newScore];
-    setScores(updated);
+    setCardScores(updated);
   };
 
   return (
@@ -95,14 +94,14 @@ function CardScore() {
           selected={selected === 0}
           onClick={() => setSelected(0)}
         >
-          {scores[0]}
+          {cardScores[0]}
         </ScoreBox>
         <ScoreBox
           color="yellow"
           selected={selected === 1}
           onClick={() => setSelected(1)}
         >
-          {scores[1]}
+          {cardScores[1]}
         </ScoreBox>
       </ScoreContainer>
       <ButtonGroup>

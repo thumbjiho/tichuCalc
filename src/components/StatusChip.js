@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 // Assuming ChevronIcon or similar icon is passed as a child or imported here if needed
 // import { ReactComponent as ChevronIcon } from "./assets/icons/chevron-up-down.svg";
 
@@ -18,19 +18,31 @@ const StatusChipWrapper = styled.div`
   align-items: center;
   justify-content: center;
   /* border: 1px solid white; (주석 처리됨) */
-  transition: background-color 0.2s ease; /* 호버 시 배경색 전환 부드럽게 */
+  /* transition: background-color 0.2s ease; 호버 시 배경색 전환 부드럽게 */
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.2); /* 호버 시 배경색 변경 */
   }
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      background-color: white;
+      color: black;
+      pointer-events: none;
+      cursor: not-allowed;
+    `}
 `;
 
 // StatusChip 컴포넌트 (내용을 children으로 받을 수 있도록 수정)
-function StatusChip({ children }) {
-  // The 'handleStatusChipClick' variable was defined but not used, causing a build error.
-  // It has been removed. If you intend to add click functionality to the StatusChip,
-  // please re-implement the handler and ensure it's used (e.g., onClick={handleStatusChipClick}).
-  return <StatusChipWrapper>{children}</StatusChipWrapper>;
+function StatusChip({ children, onClick, disabled }) {
+  return (
+    <StatusChipWrapper
+      onClick={disabled ? undefined : onClick}
+      $disabled={disabled}
+    >
+      {children}
+    </StatusChipWrapper>
+  );
 }
 
 export default StatusChip;

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"; // css를 import 해야 조건부 스타일링 가능
 import { ReactComponent as ChevronIcon } from "./assets/icons/chevron-up-down.svg"; // SVG 아이콘 import
-import OrderCounter from "./OrderCounter";
-import StatusChip from "./StatusChip";
+import OrderCounter from "./OrderCounter"; // OrderCounter 컴포넌트 import
+import StatusChip from "./StatusChip"; // StatusChip 컴포넌트 import
 
 const colorMap = {
   Blue: ["#3C82F6", "#2463EB", "#5796F7", "#1E417B", "#3F5E8F"], // base, shadow, border, dark base, dark border
@@ -37,7 +37,7 @@ const PlayerCardContainer = styled.button`
   background-color: ${({ color }) => colorMap[color]?.[2] || "#ccc"};
   cursor: pointer; /* 클릭 가능함을 표시 */
   transition: all 0.05s ease-out;
-  &:hover {
+  클릭 애니메이션을 부드럽게 &:hover {
     opacity: 0.9; /* 호버 시 약간 투명하게 */
   }
 
@@ -55,7 +55,6 @@ const PlayerCardContainer = styled.button`
 `;
 
 // 플레이어 이름과 순서 카운터를 감싸는 Wrapper
-// 기존 `Wrapper`를 PlayerNameAndOrderWrapper로 이름 변경 (더 명확하게)
 const PlayerNameAndOrderWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,20 +71,34 @@ function PlayerCard({
   playerColor, // 플레이어 카드 배경/테두리 색상
   playerName, // 플레이어 이름
   onCardClick, // 카드 클릭 시 호출될 함수
+  onStatusChipClick, // StatusChip 클릭 시 호출될 함수 (TichuScore에서 전달됨)
+  tichuStatus, // 현재 Tichu 상태 (TichuScore에서 전달됨)
 }) {
+  // StatusChip 클릭 핸들러: 이벤트 버블링 방지 및 부모의 onStatusChipClick 호출
+  const handleStatusChipClickLocal = (event) => {
+    event.stopPropagation(); // 부모의 onClick (PlayerCardContainer) 호출 방지
+    if (onStatusChipClick) {
+      onStatusChipClick(); // 부모로부터 받은 onStatusChipClick 함수 호출
+    }
+  };
+
   return (
     <PlayerCardContainer
       color={playerColor}
-      onClick={onCardClick} // 클릭 이벤트 핸들러 연결
+      onClick={onCardClick} // PlayerCard 전체 클릭 이벤트 핸들러
       $isPressed={isSelected} // isSelected 값에 따라 눌린 상태 스타일 적용
     >
       <PlayerNameAndOrderWrapper>
         <OrderCounter>{finishOrder}</OrderCounter>
         <div>{playerName}</div>
       </PlayerNameAndOrderWrapper>
-      <StatusChip>
-        <div>NO TICHU</div>
-        <Icon iconColor={iconColor} />
+      {/* StatusChip에 tichuStatus를 children으로 전달하고, 클릭 핸들러 연결 */}
+      <StatusChip
+        onClick={handleStatusChipClickLocal}
+        disabled={isSelected}
+      >
+        <div>{tichuStatus}</div>
+        {!isSelected && <Icon iconColor={iconColor} />}
       </StatusChip>
     </PlayerCardContainer>
   );

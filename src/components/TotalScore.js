@@ -52,14 +52,14 @@ const ScoreBox = styled.div`
   transition: all 0.2s ease;
 `;
 
-function TotalScore() {
+function TotalScore({ scores }) {
   return (
     <Wrapper>
       <Subtitle>Total Score</Subtitle>
       <ScoreContainer>
-        <ScoreBox color="blue">30</ScoreBox>
+        <ScoreBox color="blue">{scores[0]}</ScoreBox>
         <div>:</div>
-        <ScoreBox color="yellow">30</ScoreBox>
+        <ScoreBox color="yellow">{scores[1]}</ScoreBox>
       </ScoreContainer>
     </Wrapper>
   );

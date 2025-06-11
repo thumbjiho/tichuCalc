@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // useEffect import 추가
 import styled from "styled-components";
 import CardScore from "./components/CardScore";
 import TichuScore from "./components/TichuScore";
@@ -30,12 +30,23 @@ const Wrapper = styled.div`
 `;
 
 function App() {
+  const [cardScores, setCardScores] = useState([0, 0]); // [blue, yellow]
+  const [tichuScores, setTichuScores] = useState([0, 0]); // [blue, yellow]
+
+  const totalScores = [
+    cardScores[0] + tichuScores[0],
+    cardScores[1] + tichuScores[1],
+  ];
+
   return (
     <Container>
       <Wrapper>
-        <TichuScore />
-        <CardScore />
-        <TotalScore />
+        <TichuScore setTichuScores={setTichuScores} />
+        <CardScore
+          cardScores={cardScores}
+          setCardScores={setCardScores}
+        />
+        <TotalScore scores={totalScores} />
         <SaveScore />
       </Wrapper>
     </Container>
