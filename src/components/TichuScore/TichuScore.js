@@ -1,34 +1,14 @@
-import styled from "styled-components";
-import { useEffect } from "react"; // ✅ 추가
-import Subtitle from "./Subtitle";
-import TichuTeamColumn from "./TichuTeamColumn";
-import { useTichuGameState } from "../hooks/useTichuGameState";
-
-const Wrapper = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Container = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
+import React, { useEffect } from "react";
+import Subtitle from "../Subtitle";
+import TichuTeamColumn from "./TichuTeamColumn"; // 현재 위치 기준으로 한 폴더 위로
+import { useTichuGameState } from "../../hooks/useTichuGameState";
+import { Wrapper, Container } from "./TichuScore.styles";
 
 function TichuScore({
   setTichuScores,
   setIsDoubleWin,
   setDoubleWinTeam,
-  setPlayers, // ✅ 추가
+  setPlayers,
   tichuScores = [0, 0],
 }) {
   const { players, handlePlayerClick, handleStatusClick } =
@@ -39,7 +19,7 @@ function TichuScore({
     });
 
   useEffect(() => {
-    setPlayers?.(players); // ✅ App.js에 플레이어 상태 전달
+    setPlayers?.(players);
   }, [players, setPlayers]);
 
   const bluePlayers = players.filter((p) => p.team === "Blue");

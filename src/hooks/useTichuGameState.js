@@ -146,6 +146,9 @@ export function useTichuGameState({
       return updateTichuStatuses(updated);
     });
   };
+  useEffect(() => {
+    setPlayers?.(players); // App에 전달
+  }, [players]);
 
   useEffect(() => {
     const [blue, yellow] = calculateTeamTichuScores(players);

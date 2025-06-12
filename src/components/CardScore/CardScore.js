@@ -1,92 +1,37 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Button from "./Button";
-import Subtitle from "./Subtitle";
-
-const colorMap = {
-  blue: "#3b82f6",
-  yellow: "#facc15",
-};
-
-const Wrapper = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ScoreContainer = styled.div`
-  box-sizing: border-box;
-  font-family: "proxima-soft";
-  display: flex;
-  width: 100%;
-  background-color: #000;
-  padding: 4px;
-  border-radius: 8px;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
-`;
-
-const ScoreBox = styled.div`
-  width: 100%;
-  height: 40px;
-  font-size: 24px;
-  font-weight: bold;
-  background-color: ${({ selected }) =>
-    selected ? "rgba(255, 255, 255, 0.15)" : "#000"};
-  color: ${({ color }) => colorMap[color?.toLowerCase()]};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  cursor: pointer;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  margin-top: 6px;
-`;
-
-const ButtonRow = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-`;
+import {
+  Wrapper,
+  ScoreContainer,
+  ScoreBox,
+  ButtonGroup,
+  ButtonRow,
+} from "./CardScore.styles";
+import Button from "../Button";
+import Subtitle from "../Subtitle";
 
 function CardScore({
   cardScores,
   setCardScores,
   isDoubleWin,
   doubleWinTeam,
+  setPrevCardScores,
 }) {
   const [selected, setSelected] = useState(0);
-  const [prevScore, setPrevScore] = useState([0, 0]);
-  const [locked, setLocked] = useState(false);
 
   useEffect(() => {
-    if (isDoubleWin && doubleWinTeam && !locked) {
-      setPrevScore(cardScores);
+    if (isDoubleWin && doubleWinTeam) {
+      setPrevCardScores?.(cardScores); // 백업
       const fixedScores =
         doubleWinTeam === "Blue" ? [200, 0] : [0, 200];
       setCardScores(fixedScores);
-      setLocked(true);
     }
-  }, [isDoubleWin, doubleWinTeam, locked, cardScores, setCardScores]);
+  }, [isDoubleWin, doubleWinTeam]);
 
   const handleScoreChange = (value) => {
-    if (isDoubleWin) return; // 점수 입력 막기
+    if (isDoubleWin) return;
 
     if (value === "ac") {
-      // 점수 리셋
       setCardScores([0, 0]);
-      setLocked(false);
       return;
     }
 
@@ -103,15 +48,8 @@ function CardScore({
   };
 
   const handleAC = () => {
-    if (isDoubleWin && locked) {
-      setCardScores(prevScore); // 백업 점수 복원
-      setLocked(false);
-    } else {
-      handleScoreChange("ac");
-    }
+    handleScoreChange("ac");
   };
-
-  console.log("cardScore.js:doubleWinTeam:", { doubleWinTeam });
 
   return (
     <Wrapper>

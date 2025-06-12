@@ -1,4 +1,4 @@
-import PlayerCard from "./PlayerCard";
+import PlayerCard from "../PlayerCard";
 import TichuScoreBox from "./TichuScoreBox";
 import styled from "styled-components";
 
