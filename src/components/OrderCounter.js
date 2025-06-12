@@ -5,7 +5,9 @@ const StyledOrderCounterWrapper = styled.div`
   position: relative;
   display: flex; // flex 컨테이너로 설정하여 내용물 중앙 정렬
   color: white; // 폰트 색상 (기본값, 순서 없을 때도 흰색 점선이 보이므로 유지)
-  width: 24px;
+  width: fit-content;
+  min-width: 24px;
+  padding: 8px;
   height: 24px;
   border-radius: 999px; // 원형으로 만듦
   font-size: 18px;
@@ -29,11 +31,9 @@ const StyledOrderCounterWrapper = styled.div`
 `;
 
 // OrderCounter 컴포넌트
-function OrderCounter({ children }) {
-  // children이 null이 아니면 $hasOrder prop을 true로 전달
-  // null이면 false가 되어 기본 스타일 적용
+function OrderCounter({ children, isSelected }) {
   return (
-    <StyledOrderCounterWrapper $hasOrder={children !== null}>
+    <StyledOrderCounterWrapper $hasOrder={isSelected}>
       {children}
     </StyledOrderCounterWrapper>
   );

@@ -1,5 +1,4 @@
-// src/components/CardScore.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import Subtitle from "./Subtitle";
@@ -12,12 +11,10 @@ const colorMap = {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  /* max-width: 512px; */
   flex-direction: column;
   gap: 8px;
   justify-content: center;
   align-items: center;
-  padding: px;
 `;
 
 const ScoreContainer = styled.div`
@@ -44,7 +41,6 @@ const ScoreBox = styled.div`
   justify-content: center;
   border-radius: 4px;
   cursor: pointer;
-  /* transition: all 0.2s ease; */
 `;
 
 const ButtonGroup = styled.div`
@@ -64,12 +60,40 @@ const ButtonRow = styled.div`
   gap: 8px;
 `;
 
-function CardScore({ cardScores, setCardScores }) {
+function CardScore({
+  cardScores,
+  setCardScores,
+  isDoubleWin,
+  doubleWinTeam,
+}) {
   const [selected, setSelected] = useState(0);
+  const [prevScore, setPrevScore] = useState([0, 0]);
+  const [locked, setLocked] = useState(false);
+
+  useEffect(() => {
+    // Double Win 발생 시 점수 고정
+    if (isDoubleWin && !locked && doubleWinTeam) {
+      setPrevScore(cardScores); // 기존 점수 백업
+      const fixedScores =
+        doubleWinTeam === "Blue" ? [200, 0] : [0, 200];
+      setCardScores(fixedScores);
+      setLocked(true);
+    }
+
+    // Double Win이 해제되었을 때 점수 복원
+    if (!isDoubleWin && locked) {
+      setCardScores(prevScore); // 복원
+      setLocked(false);
+    }
+  }, [isDoubleWin, doubleWinTeam]);
 
   const handleScoreChange = (value) => {
+    if (isDoubleWin) return; // 점수 입력 막기
+
     if (value === "ac") {
+      // 점수 리셋
       setCardScores([0, 0]);
+      setLocked(false);
       return;
     }
 
@@ -84,6 +108,17 @@ function CardScore({ cardScores, setCardScores }) {
         : [otherScore, newScore];
     setCardScores(updated);
   };
+
+  const handleAC = () => {
+    if (isDoubleWin && locked) {
+      setCardScores(prevScore); // 백업 점수 복원
+      setLocked(false);
+    } else {
+      handleScoreChange("ac");
+    }
+  };
+
+  console.log("cardScore.js:doubleWinTeam:", { doubleWinTeam });
 
   return (
     <Wrapper>
@@ -109,24 +144,28 @@ function CardScore({ cardScores, setCardScores }) {
           <Button
             color="green"
             onClick={() => handleScoreChange(5)}
+            disabled={isDoubleWin}
           >
             +5
           </Button>
           <Button
             color="green"
             onClick={() => handleScoreChange(10)}
+            disabled={isDoubleWin}
           >
             +10
           </Button>
           <Button
             color="green"
             onClick={() => handleScoreChange(25)}
+            disabled={isDoubleWin}
           >
             +25
           </Button>
           <Button
             color="green"
             onClick={() => handleScoreChange(50)}
+            disabled={isDoubleWin}
           >
             +50
           </Button>
@@ -135,24 +174,28 @@ function CardScore({ cardScores, setCardScores }) {
           <Button
             color="red"
             onClick={() => handleScoreChange(-5)}
+            disabled={isDoubleWin}
           >
             -5
           </Button>
           <Button
             color="red"
             onClick={() => handleScoreChange(-10)}
+            disabled={isDoubleWin}
           >
             -10
           </Button>
           <Button
             color="red"
             onClick={() => handleScoreChange(-25)}
+            disabled={isDoubleWin}
           >
             -25
           </Button>
           <Button
             color="orange"
-            onClick={() => handleScoreChange("ac")}
+            onClick={handleAC}
+            disabled={isDoubleWin}
           >
             AC
           </Button>

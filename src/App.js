@@ -1,9 +1,9 @@
-import React, { useState } from "react"; // useEffect import 추가
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import CardScore from "./components/CardScore";
 import TichuScore from "./components/TichuScore";
 import SaveScore from "./components/SaveScore";
-import TotalScore from "./components/TotalScore.js";
+import TotalScore from "./components/TotalScore";
 import "./App.css";
 
 const Container = styled.div`
@@ -26,13 +26,24 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 16px;
-  /* background-color: red; */
 `;
 
 function App() {
   const [isDoubleWin, setIsDoubleWin] = useState(false);
-  const [cardScores, setCardScores] = useState([0, 0]); // [blue, yellow]
-  const [tichuScores, setTichuScores] = useState([0, 0]); // [blue, yellow]
+  const [doubleWinTeam, setDoubleWinTeam] = useState(null);
+  const [cardScores, setCardScores] = useState([0, 0]);
+  const [tichuScores, setTichuScores] = useState([0, 0]);
+  const [players, setPlayers] = useState([]); // 플레이어 상태 받는 방식
+
+  // 모든 플레이어가 order를 가졌는지 확인
+  const allOrdered = useMemo(
+    () =>
+      players.length === 4 && players.every((p) => p.order !== null),
+    [players]
+  );
+
+  const saveDisabled =
+    cardScores[0] === 0 && cardScores[1] === 0 && !isDoubleWin;
 
   const totalScores = [
     cardScores[0] + tichuScores[0],
@@ -45,15 +56,18 @@ function App() {
         <TichuScore
           setTichuScores={setTichuScores}
           setIsDoubleWin={setIsDoubleWin}
-          scores={tichuScores}
+          setDoubleWinTeam={setDoubleWinTeam}
+          tichuScores={tichuScores}
+          setPlayers={setPlayers}
         />
         <CardScore
           cardScores={cardScores}
           setCardScores={setCardScores}
           isDoubleWin={isDoubleWin}
+          doubleWinTeam={doubleWinTeam}
         />
         <TotalScore scores={totalScores} />
-        <SaveScore />
+        <SaveScore disabled={saveDisabled || !allOrdered} />
       </Wrapper>
     </Container>
   );

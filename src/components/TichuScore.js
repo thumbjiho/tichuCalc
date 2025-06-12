@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { useEffect } from "react"; // ✅ 추가
 import Subtitle from "./Subtitle";
 import TichuTeamColumn from "./TichuTeamColumn";
-import { useTichuGameState } from "../hooks/useTichuGameState"; // Assuming this path is correct
+import { useTichuGameState } from "../hooks/useTichuGameState";
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -23,17 +24,24 @@ const Container = styled.div`
   align-items: center;
 `;
 
-// TichuScore component receives scores from App.js
 function TichuScore({
   setTichuScores,
   setIsDoubleWin,
-  scores = [0, 0],
+  setDoubleWinTeam,
+  setPlayers, // ✅ 추가
+  tichuScores = [0, 0],
 }) {
-  // useTichuGameState hook manages player state and calls setTichuScores/setIsDoubleWin
   const { players, handlePlayerClick, handleStatusClick } =
-    useTichuGameState({ setTichuScores, setIsDoubleWin });
+    useTichuGameState({
+      setTichuScores,
+      setIsDoubleWin,
+      setDoubleWinTeam,
+    });
 
-  // Filter players for each team
+  useEffect(() => {
+    setPlayers?.(players); // ✅ App.js에 플레이어 상태 전달
+  }, [players, setPlayers]);
+
   const bluePlayers = players.filter((p) => p.team === "Blue");
   const yellowPlayers = players.filter((p) => p.team === "Yellow");
 
@@ -41,18 +49,17 @@ function TichuScore({
     <Wrapper>
       <Subtitle>Tichu Score</Subtitle>
       <Container>
-        {/* Pass filtered players and the relevant score from the 'scores' prop */}
         <TichuTeamColumn
           team="Blue"
           players={bluePlayers}
-          score={scores[0]}
+          tichuScore={tichuScores[0]}
           onCardClick={handlePlayerClick}
           onStatusClick={handleStatusClick}
         />
         <TichuTeamColumn
           team="Yellow"
           players={yellowPlayers}
-          score={scores[1]}
+          tichuScore={tichuScores[1]}
           onCardClick={handlePlayerClick}
           onStatusClick={handleStatusClick}
         />

@@ -14,7 +14,7 @@ const TeamColumn = styled.div`
 function TichuTeamColumn({
   team,
   players,
-  score,
+  tichuScore,
   onCardClick,
   onStatusClick,
 }) {
@@ -25,7 +25,7 @@ function TichuTeamColumn({
           key={player.id}
           playerColor={team}
           playerName={player.name}
-          finishOrder={player.order}
+          displayOrder={player.displayOrder}
           isSelected={player.isSelected}
           onCardClick={() => onCardClick(player.id)}
           onStatusChipClick={() => onStatusClick(player.id)}
@@ -36,7 +36,7 @@ function TichuTeamColumn({
       <TichuScoreBox
         textColor={team === "Blue" ? "#3C82F6" : "#E9B306"}
       >
-        {score}
+        {tichuScore}
       </TichuScoreBox>
     </TeamColumn>
   );

@@ -68,7 +68,7 @@ const PlayerNameAndOrderWrapper = styled.div`
 // PlayerCard 컴포넌트
 function PlayerCard({
   isSelected, // 카드가 선택(눌린) 상태인지 나타내는 prop
-  finishOrder, // 표시될 순서 번호
+  displayOrder, // 표시될 순서 번호
   iconColor, // 아이콘 색상
   playerColor, // 플레이어 카드 배경/테두리 색상
   playerName, // 플레이어 이름
@@ -91,7 +91,9 @@ function PlayerCard({
       $isPressed={isSelected} // isSelected 값에 따라 눌린 상태 스타일 적용
     >
       <PlayerNameAndOrderWrapper>
-        <OrderCounter>{finishOrder}</OrderCounter>
+        <OrderCounter isSelected={isSelected}>
+          {displayOrder}
+        </OrderCounter>
         <div>{playerName}</div>
       </PlayerNameAndOrderWrapper>
       {/* StatusChip에 tichuStatus를 children으로 전달하고, 클릭 핸들러 연결 */}

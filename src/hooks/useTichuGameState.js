@@ -8,6 +8,7 @@ import {
 export function useTichuGameState({
   setTichuScores,
   setIsDoubleWin,
+  setDoubleWinTeam,
 }) {
   const [players, setPlayers] = useState([
     {
@@ -17,6 +18,7 @@ export function useTichuGameState({
       baseTichuStatus: TICHU_STATUS.NO_TICHU,
       tichuStatus: TICHU_STATUS.NO_TICHU,
       order: null,
+      displayOrder: null,
       isSelected: false,
     },
     {
@@ -26,6 +28,7 @@ export function useTichuGameState({
       baseTichuStatus: TICHU_STATUS.NO_TICHU,
       tichuStatus: TICHU_STATUS.NO_TICHU,
       order: null,
+      displayOrder: null,
       isSelected: false,
     },
     {
@@ -35,6 +38,7 @@ export function useTichuGameState({
       baseTichuStatus: TICHU_STATUS.NO_TICHU,
       tichuStatus: TICHU_STATUS.NO_TICHU,
       order: null,
+      displayOrder: null,
       isSelected: false,
     },
     {
@@ -44,6 +48,7 @@ export function useTichuGameState({
       baseTichuStatus: TICHU_STATUS.NO_TICHU,
       tichuStatus: TICHU_STATUS.NO_TICHU,
       order: null,
+      displayOrder: null,
       isSelected: false,
     },
   ]);
@@ -85,20 +90,44 @@ export function useTichuGameState({
     setPlayers((prev) => {
       let toggled = prev.map((p) =>
         p.id === clickedId
-          ? { ...p, isSelected: !p.isSelected, order: null }
+          ? {
+              ...p,
+              isSelected: !p.isSelected,
+              order: null,
+              displayOrder: null,
+            }
           : p
       );
+
       const selected = toggled
         .filter((p) => p.isSelected)
         .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
-      const final = toggled.map((p) =>
-        p.isSelected
-          ? {
-              ...p,
-              order: selected.findIndex((sp) => sp.id === p.id) + 1,
-            }
-          : { ...p, order: null, tichuStatus: p.baseTichuStatus }
-      );
+
+      let first = selected[0];
+      let second = selected[1];
+      const isDouble = first && second && first.team === second.team;
+      const doubleTeam = isDouble ? first.team : null;
+
+      const final = toggled.map((p) => {
+        if (!p.isSelected) {
+          return {
+            ...p,
+            order: null,
+            displayOrder: null,
+            tichuStatus: p.baseTichuStatus,
+          };
+        }
+        const actualOrder =
+          selected.findIndex((sp) => sp.id === p.id) + 1;
+        const displayOrder =
+          isDouble && (p.id === first.id || p.id === second.id)
+            ? "1 & 2"
+            : actualOrder;
+        return { ...p, order: actualOrder, displayOrder };
+      });
+
+      setIsDoubleWin?.(isDouble);
+      setDoubleWinTeam?.(doubleTeam);
       return updateTichuStatuses(final);
     });
   };
@@ -121,10 +150,11 @@ export function useTichuGameState({
   useEffect(() => {
     const [blue, yellow] = calculateTeamTichuScores(players);
     setTichuScores([blue, yellow]);
-    const first = players.find((p) => p.order === 1);
-    const second = players.find((p) => p.order === 2);
-    setIsDoubleWin(first && second && first.team === second.team);
-  }, [players]);
+  }, [players, setTichuScores]);
 
-  return { players, handlePlayerClick, handleStatusClick };
+  return {
+    players,
+    handlePlayerClick,
+    handleStatusClick,
+  };
 }
