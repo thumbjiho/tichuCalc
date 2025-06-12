@@ -71,21 +71,14 @@ function CardScore({
   const [locked, setLocked] = useState(false);
 
   useEffect(() => {
-    // Double Win 발생 시 점수 고정
-    if (isDoubleWin && !locked && doubleWinTeam) {
-      setPrevScore(cardScores); // 기존 점수 백업
+    if (isDoubleWin && doubleWinTeam && !locked) {
+      setPrevScore(cardScores);
       const fixedScores =
         doubleWinTeam === "Blue" ? [200, 0] : [0, 200];
       setCardScores(fixedScores);
       setLocked(true);
     }
-
-    // Double Win이 해제되었을 때 점수 복원
-    if (!isDoubleWin && locked) {
-      setCardScores(prevScore); // 복원
-      setLocked(false);
-    }
-  }, [isDoubleWin, doubleWinTeam]);
+  }, [isDoubleWin, doubleWinTeam, locked, cardScores, setCardScores]);
 
   const handleScoreChange = (value) => {
     if (isDoubleWin) return; // 점수 입력 막기
