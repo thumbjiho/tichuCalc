@@ -30,6 +30,7 @@ const Wrapper = styled.div`
 `;
 
 function App() {
+  const [isDoubleWin, setIsDoubleWin] = useState(false);
   const [cardScores, setCardScores] = useState([0, 0]); // [blue, yellow]
   const [tichuScores, setTichuScores] = useState([0, 0]); // [blue, yellow]
 
@@ -41,10 +42,15 @@ function App() {
   return (
     <Container>
       <Wrapper>
-        <TichuScore setTichuScores={setTichuScores} />
+        <TichuScore
+          setTichuScores={setTichuScores}
+          setIsDoubleWin={setIsDoubleWin}
+          scores={tichuScores}
+        />
         <CardScore
           cardScores={cardScores}
           setCardScores={setCardScores}
+          isDoubleWin={isDoubleWin}
         />
         <TotalScore scores={totalScores} />
         <SaveScore />

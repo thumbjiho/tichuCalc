@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 // import { ReactComponent as ChevronIcon } from "./assets/icons/chevron-up-down.svg";
 
 const StatusChipWrapper = styled.div`
+  position: relative;
   box-sizing: border-box;
   display: flex;
   height: 32px;
@@ -17,8 +18,7 @@ const StatusChipWrapper = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid white; (주석 처리됨) */
-  /* transition: background-color 0.2s ease; 호버 시 배경색 전환 부드럽게 */
+  transition: all 0.15s;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.2); /* 호버 시 배경색 변경 */
@@ -30,6 +30,8 @@ const StatusChipWrapper = styled.div`
       color: black;
       pointer-events: none;
       cursor: not-allowed;
+      top: -3px;
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
     `}
 `;
 

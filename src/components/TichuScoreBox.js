@@ -8,10 +8,12 @@ function TichuScoreBoxBase({ children, ...props }) {
 }
 
 // TichuScoreBox is a styled component that applies CSS to TichuScoreBoxBase.
-const TichuScoreBox = styled(TichuScoreBoxBase)`
+const TichuScoreBox = styled(TichuScoreBoxBase).withConfig({
+  shouldForwardProp: (prop) => prop !== "textColor",
+})`
   /* Add your desired CSS styles here */
   background-color: #000; /* Example background color */
-  color: ${({ textColor }) => textColor || "white"};
+  color: ${({ textColor }) => textColor};
   font-family: "proxima-soft";
   display: flex;
   justify-content: center;

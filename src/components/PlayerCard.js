@@ -8,7 +8,9 @@ const colorMap = {
   Yellow: ["#E9B306", "#CA8A03", "#EEC239", "#8C6B06", "#A38937"],
 };
 
-const Icon = styled(ChevronIcon)`
+const Icon = styled(ChevronIcon).withConfig({
+  shouldForwardProp: (prop) => prop !== "iconColor",
+})`
   width: 12px;
   height: 12px;
   // iconColor prop이 있으면 그 색상, 없으면 기본값 (반투명 검정)
@@ -36,8 +38,8 @@ const PlayerCardContainer = styled.button`
   box-shadow: 0 3px 0 ${({ color }) => colorMap[color]?.[1] || "#ccc"};
   background-color: ${({ color }) => colorMap[color]?.[2] || "#ccc"};
   cursor: pointer; /* 클릭 가능함을 표시 */
-  transition: all 0.05s ease-out;
-  클릭 애니메이션을 부드럽게 &:hover {
+  transition: all 0.15s;
+  &:hover {
     opacity: 0.9; /* 호버 시 약간 투명하게 */
   }
 
